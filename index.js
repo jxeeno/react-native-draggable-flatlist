@@ -293,13 +293,6 @@ class SortableFlatList extends Component {
     if (!this._hasMoved) this.setState(initialState)
   }
 
-  setRef = index => (ref) => {
-    if (!!ref) {
-      this._refs[index] = ref
-      this.measureItem(index)
-    }
-  }
-
   renderItem = ({ item, index }) => {
     const { renderItem, data, horizontal } = this.props
     const { activeRow, spacerIndex } = this.state
@@ -381,7 +374,7 @@ class SortableFlatList extends Component {
           // console.log('layout', e.nativeEvent)
           this.throttledMeasureContainer()
         }}
-        ref={this.setRef}
+        ref={_ => this._ref = _}
         {...this._panResponder.panHandlers}
         style={styles.wrapper} // Setting { opacity: 1 } fixes Android measurement bug: https://github.com/facebook/react-native/issues/18034#issuecomment-368417691
       >
