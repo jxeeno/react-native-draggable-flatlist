@@ -350,14 +350,16 @@ class SortableFlatList extends Component {
   throttledMeasureContainer = throttle(1000, this.measureContainer);
 
   measureContainer = () => {
-    if (this._ref && this._containerOffset === undefined) {
+    if (this._ref) {
       // setTimeout required or else dimensions reported as 0
       setTimeout(() => {
-        const { horizontal } = this.props
-        this._ref.measure((x, y, width, height, pageX, pageY) => {
-          this._containerOffset = horizontal ? pageX : pageY
-          this._containerSize = horizontal ? width : height
-        })
+        if (this._ref) {
+          const { horizontal } = this.props
+          this._ref.measure((x, y, width, height, pageX, pageY) => {
+            this._containerOffset = horizontal ? pageX : pageY
+            this._containerSize = horizontal ? width : height
+          })
+        }
       }, 50)
     }
   }
