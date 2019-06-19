@@ -1,4 +1,5 @@
 import React, { Component, PureComponent } from 'react'
+import {throttle} from 'throttle-debounce';
 import {
   LayoutAnimation,
   YellowBox,
@@ -51,6 +52,7 @@ class SortableFlatList extends Component {
   _containerOffset
   _move = 0
   _hasMoved = false
+  _ref = null
   _refs = []
   _additionalOffset = 0
   _androidStatusBarOffset = 0
@@ -340,12 +342,19 @@ class SortableFlatList extends Component {
     )
   }
 
-  measureContainer = ref => {
-    if (ref && this._containerOffset === undefined) {
+  setRef = ref => {
+    this._ref = ref;
+    this.measureContainer();
+  }
+
+  throttledMeasureContainer = throttle(1000, this.measureContainer);
+
+  measureContainer = () => {
+    if (this._ref && this._containerOffset === undefined) {
       // setTimeout required or else dimensions reported as 0
       setTimeout(() => {
         const { horizontal } = this.props
-        ref.measure((x, y, width, height, pageX, pageY) => {
+        this._ref.measure((x, y, width, height, pageX, pageY) => {
           this._containerOffset = horizontal ? pageX : pageY
           this._containerSize = horizontal ? width : height
         })
@@ -368,8 +377,9 @@ class SortableFlatList extends Component {
       <View
         onLayout={e => {
           // console.log('layout', e.nativeEvent)
+          this.throttledMeasureContainer()
         }}
-        ref={this.measureContainer}
+        ref={this.setRef}
         {...this._panResponder.panHandlers}
         style={styles.wrapper} // Setting { opacity: 1 } fixes Android measurement bug: https://github.com/facebook/react-native/issues/18034#issuecomment-368417691
       >

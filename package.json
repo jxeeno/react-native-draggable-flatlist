@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/computerjazz/react-native-draggable-flatlist/issues"
   },
-  "homepage": "https://github.com/computerjazz/react-native-draggable-flatlist#readme"
+  "homepage": "https://github.com/computerjazz/react-native-draggable-flatlist#readme",
+  "dependencies": {
+    "throttle-debounce": "^2.1.0"
+  }
 }
