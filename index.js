@@ -279,6 +279,7 @@ class SortableFlatList extends Component {
       this.onReleaseAnimationEnd()
       return
     }
+    this.measureContainer();
     this._refs.forEach((ref, index) => this.measureItem(ref, index))
     this._spacerIndex = index
     this.setState({
